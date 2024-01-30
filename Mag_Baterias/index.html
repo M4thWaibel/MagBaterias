@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mag Baterias</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="src/styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <img src="src/images/Logo.png">
+                    <h2>MagBaterias</h2>
+                </div>
+                
+                <div class="close" id="close-btn">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        dashboard
+                    </span>
+                    <h3>Dashboard</h3>
+                </a>
+                <a href="#"> <!-- clientes -->
+                    <span class="material-symbols-outlined">
+                        person_outline
+                    </span>
+                    <h3>Users</h3>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        receipt_long
+                    </span>
+                    <h3>History</h3>
+                </a>
+                <a href="#" class="active"> <!-- Olhar dps-->
+                    <span class="material-symbols-outlined">
+                        insights
+                    </span>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="#"> <!-- tirar dps -->
+                    <span class="material-symbols-outlined">
+                        mail_outline
+                    </span>
+                    <h3>Tickets</h3>
+                    <span class="message-count">27</span><!-- Número de tickets abertos, porém não será usado na versão final-->
+                </a>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        inventory
+                    </span>
+                    <h3>Sale List</h3>
+                </a>
+                <a href="#"> <!-- tirar dps -->
+                    <span class="material-symbols-outlined">
+                        report
+                    </span>
+                    <h3>Reports</h3>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        settings
+                    </span>
+                    <h3>Settings</h3>
+                </a>
+                <a href="#">  <!-- tirar dps -->
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+                    <h3>New Login</h3>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-outlined">
+                        logout
+                    </span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+
+        </aside>
+        <!-- End of sidebar Section-->
+
+        <!-- Main Content -->
+        <main>
+            <h1>Analytics</h1>
+            <!-- Analyses -->
+            <div class="analyse">   <!-- total de vendas  --> <!-- Trocar para vendas do dia-->
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Sales</h3>
+                            <h1>$65,024</h1>
+                        </div>
+                        <div class="progresss">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="percentage">
+                                <p>+81%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="visits">   <!-- susbtituir  --> <!-- Trocar para vendas do mês-->
+                    <div class="status">
+                        <div class="info">
+                            <h3>Site Visit</h3>
+                            <h1>24,981</h1>
+                        </div>
+                        <div class="progresss">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="percentage">
+                                <p>-48%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="searches">   <!-- susbtituir  --> <!-- Trocar pra vendas totais-->
+                    <div class="status">
+                        <div class="info">
+                            <h3>Searches</h3>
+                            <h1>14,147</h1>
+                        </div>
+                        <div class="progresss">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="percentage">
+                                <p>+21%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Analyses -->
+
+            <!-- New Users Section-->
+            <div class="new-users"> <!-- last-clients -->
+                <h2>New Users</h2> <!-- Últimos 3 Clientes -->
+                <div class="user-list">
+                    <div class="user">
+                        <h2> Nome 1</h2> <!-- Nome do usuário -->
+                    </div>
+                    <div class="user">
+                        <h2> Nome 2</h2> <!-- Nome do usuário -->
+                    </div>
+                    <div class="user">
+                        <h2> Nome 3</h2> <!-- Nome do usuário -->
+                    </div>
+                    <div class="user">
+                        <img src="src/images/plus.png">
+                        <h2>More</h2> <!-- Mais Clientes-->
+                        <p>New User</p> <!-- Novo Cliente -->
+                    </div>
+                </div>
+            </div>
+            <!-- End of New Users Section -->
+
+            <!-- Recent Orders -->
+            <div class="recent-orders">
+                <h2> Recent Orders </h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome Cliente</th>
+                            <th>Código da Venda</th>
+                            <th>Pagamento</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <a href="#">Mostrar Todos</a>
+            </div>
+            <!-- End of Recent Orders-->
+
+        </main>
+
+        <!-- End of Main Content  -->
+
+        <!-- Right Section -->
+
+        <div class="right-selection">
+            <div class="nav">
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="src/script/orders.js"></script>
+    <script src="src/script/script.js"></script>
+
+</body>
+
+</html>
