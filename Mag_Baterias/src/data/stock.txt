@@ -1,0 +1,7 @@
+        productName: 'Bateria',
+        idNumber: '001',
+        quantity: '10',
+        brand:'Moura', /* marca da bateria */
+        purchasePrice: '100,00',
+        salePrice: '180,00',
+        warranty: 'S' /* Tem garantia? S/N */

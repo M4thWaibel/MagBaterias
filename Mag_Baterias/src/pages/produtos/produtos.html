@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mag Baterias</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../../styles/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Sidebar Section -->
+      <aside>
+        <div class="toggle">
+          <div class="logo">
+            <img src="../../images/Logo.png" />
+            <h2>MagBaterias</h2>
+          </div>
+
+          <div class="close" id="close-btn">
+            <span class="material-symbols-outlined"> close </span>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <a href="../../../index.html">
+            <span class="material-symbols-outlined"> dashboard </span>
+            <h3>Página Inicial</h3>
+          </a>
+          <a href="#">
+            <!-- clientes -->
+            <span class="material-symbols-outlined"> person_outline </span>
+            <h3>Clientes</h3>
+          </a>
+          <a href="#">
+            <!-- Olhar se torno um histórico geral da mag-->
+            <span class="material-symbols-outlined"> receipt_long </span>
+            <h3>Histórico</h3>
+          </a>
+          <a href="../estoque/estoque.html">
+            <span class="material-symbols-outlined"> inventory </span>
+            <h3>Estoque</h3>
+          </a>
+          <a href="#">
+            <span class="material-symbols-outlined"> settings </span>
+            <h3>Configurações</h3>
+          </a>
+          <a href="#">
+            <span class="material-symbols-outlined"> logout </span>
+            <h3>Logout</h3>
+          </a>
+        </div>
+      </aside>
+      <!-- End of sidebar Section-->
+
+      <main>
+        <h1>Cadastro de Novo Produto</h1>
+        <form id="product-form">
+          <label for="productName">Nome do Produto: </label>
+          <input type="text" id="productName" name="productName" required />
+          <label for="brand">Marca: </label>
+          <input type="text" id="brand" name="brand" />
+          <label for="amper">Ampere: </label>
+          <input type="number" id="amper" name="amper" />
+          <label for="factoryWeight">Peso de Fábrica</label>
+          <input type="number" id="factoryWeight" name="factoryWeight" />
+          <label for="fabricationDate">Data de Fabricação: </label>
+          <input type="date" id="fabricationDate" name="fabricationDate" />
+          <label for="expirationDate">Data de Validade</label>
+          <input type="date" id="expirationDate" name="expirationDate" />
+          <label for="quantity">Quantidade: </label>
+          <input type="number" id="quantity" name="quantity" />
+          <label for="purchasePrice">Preço de Compra: </label>
+          <input type="number" id="purchasePrice" name="purchasePrice" />
+          <label for="salePrice">Preço de Venda</label>
+          <input type="number" id="salePrice" name="salePrice" />
+          <label for="warranty">Tem Garantia?</label>
+          <select id="warranty" name="warranty">
+            <option value="yes">Sim</option>
+            <option value="no">Não</option>
+          </select>
+        </form>
+      </main>
+
+      <!-- Right Section -->
+      <aside>
+        <div class="right-sidebar">
+          <a href="#">
+            <span class="material-symbols-outlined"> add </span>
+            <h3>Novo Cliente</h3>
+          </a>
+          <a href="#">
+            <span class="material-symbols-outlined"> point_of_sale </span>
+            <h3>Nova Venda</h3>
+          </a>
+          <a href="#" class="active">
+            <span class="material-symbols-outlined"> inventory_2 </span>
+            <h3>Novo Produto</h3>
+          </a>
+        </div>
+      </aside>
+      <!--End of Right Section-->
+    </div>
+
+    <script src="../../script/script.js"></script>
+    <script src="../../script/stock.js"></script>
+  </body>
+</html>

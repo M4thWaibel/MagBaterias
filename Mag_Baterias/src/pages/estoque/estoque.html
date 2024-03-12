@@ -13,18 +13,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="../../styles/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 
 <body>
-
     <div class="container">
         <!-- Sidebar Section -->
         <aside>
             <div class="toggle">
                 <div class="logo">
-                    <img src="src/images/Logo.png">
+                    <img src="../../images/Logo.png">
                     <h2>MagBaterias</h2>
                 </div>
                 
@@ -36,7 +35,7 @@
             </div>
 
             <div class="sidebar">
-                <a href="#" class="active">
+                <a href="../../../index.html">
                     <span class="material-symbols-outlined">
                         dashboard
                     </span>
@@ -54,7 +53,7 @@
                     </span>
                     <h3>Histórico</h3>
                 </a>
-                <a href="src/pages/estoque/estoque.html">
+                <a href="#" class="active">
                     <span class="material-symbols-outlined">
                         inventory
                     </span>
@@ -77,98 +76,28 @@
         </aside>
         <!-- End of sidebar Section-->
 
-        <!-- Main Content -->
         <main>
-            <h1>Dados Gerais</h1>
-            <!-- Analyses -->
-            <div class="analyse" hidden>   <!-- vendas  --> <!-- Ainda tem que retirar os números fictícios e ajustar para os corretos-->
-                <div class="sales-daily" ><!-- Trocar para vendas do dia-->
-                    <div class="status">
-                        <div class="info">
-                            <h3>Vendas do Dia</h3>
-                            <h1>$65,024</h1>
-                        </div>
-                        <div class="progresss">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="percentage">
-                                <p>+81%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sales-month">    <!-- Trocar para vendas do mês-->
-                    <div class="status">
-                        <div class="info">
-                            <h3>Vendas do Mês</h3>
-                            <h1>24,981</h1>
-                        </div>
-                        <div class="progresss">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="percentage">
-                                <p>-48%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="total-sales">    <!-- Trocar pra vendas totais-->
-                    <div class="status">
-                        <div class="info">
-                            <h3>Vendas Totais</h3>
-                            <h1>14,147</h1>
-                        </div>
-                        <div class="progresss">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="percentage">
-                                <p>+21%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End of Analyses -->
-
-            <!-- New Client Section-->
-            <div class="new-client"> <!-- last-clients -->
-                <h2>Últimos Clientes</h2> <!-- Últimos 3 Clientes -->
-                <div class="client-list">
-                    <div class="client">
-                    <h2> Nome 1</h2> <!-- Nome do usuário -->
-                    </div>
-                    <div class="client">
-                        <h2> Nome 2</h2> <!-- Nome do usuário -->
-                    </div>
-                    <div class="client">
-                        <h2> Nome 3</h2> <!-- Nome do usuário -->
-                    </div>
-                </div>
-            </div>
-            <!-- End of New Client Section -->
-
-            <!-- Recent Orders -->
-            <div class="recent-orders">
-                <h2> Últimas Vendas </h2>
-                <table id="orders">
+            <div class="stock">
+                <h2> Estoque </h2>
+                <table id="stock">
                     <thead>
                         <tr>
-                            <th>Nome Cliente</th>
-                            <th>Código da Venda</th>
-                            <th>Pagamento</th>
+                            <th>Nome do Produto</th>
+                            <th>Marca</th>
+                            <th>Código do Produto</th>
+                            <th>Quantidade em Estoque</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
-                <a href="#">Mostrar Todos</a>
             </div>
-            <!-- End of Recent Orders-->
-
         </main>
-        <!-- End of Main Content  -->
+
+        <!-- Modal -->
+        <div id="meuModal" class="modal">
+            <!--Conteúdo-->
+        </div>
+        <!--End Modal -->
 
         <!-- Right Section -->
         <aside>
@@ -185,7 +114,7 @@
                         </span>
                         <h3>Nova Venda</h3>
                     </a>
-                    <a href="src/pages/produtos/produtos.html">
+                    <a href="../produtos/produtos.html">
                         <span class="material-symbols-outlined">
                             inventory_2
                         </span>
@@ -197,9 +126,8 @@
 
     </div>
 
-    <script src="src/script/orders.js"></script>
-    <script src="src/script/script.js"></script>
-
+    <script src="../../script/stock.js"></script>
+    <script src="../../script/script.js"></script>
 </body>
 
 </html>
