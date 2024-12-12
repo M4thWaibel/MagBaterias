@@ -13,5 +13,5 @@ O projeto encontra-se em fase de desenvolvimento no momento, novas funcionalidad
 - Conexão com a internet
 - Browser compatível
 
-> [!IMPORTANT]
+> [!IMPORTANTE]
 > Este projeto foi criado em parceria com a empresa e eles estão cientes do uso deste projeto como conteúdo de portifólio.
