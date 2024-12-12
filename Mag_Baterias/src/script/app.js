@@ -2,7 +2,8 @@ let db;
 
 async function initDatabase(){
     //Carrega a biblioteca SQL.js
-    const SQL = await initSqlJs({locateFile: file => 'src/libs/sql-wasm.js'});
+    const SQL = await initSqlJs({locateFile: () => 'src/libs/sql-wasm.wasm'});
+    
     //Verifica se há um Banco salvo no local
     const saveDB = localStorage.getItem("savedDatabase");
 
@@ -45,10 +46,14 @@ async function initDatabase(){
         );
         `);
 
-        renderProdutos();
-        renderVendas();
-        iniciarAutoSave();
+        salvarBanco();
+
     }
+    
+    renderProdutos();
+    renderVendas();
+    renderClientes();
+    iniciarAutoSave();
 
 }
 
@@ -77,7 +82,7 @@ function iniciarAutoSave(){
 //Renderiza a tabela de produtos
 function renderProdutos(){
     const produtos = db.exec("SELECT * FROM produtos");
-    const tabela = document.querrySelector("#tabela-produtos tbody");
+    const tabela = document.querySelector("#tabela-produtos tbody");
     tabela.innerHTML = "";
 
     produtos[0]?.values.forEach(produto => {
@@ -98,7 +103,7 @@ function renderProdutos(){
 //Renderiza a tabela de vendas
 function renderVendas(){
     const vendas = db.exec("SELECT * FROM vendas");
-    const tabela = document.querrySelector("#tabela-vendas tbody");
+    const tabela = document.querySelector("#tabela-vendas tbody");
     tabela.innerHTML = "";
 
     vendas[0]?.values.forEach(venda => {
@@ -120,7 +125,7 @@ function renderVendas(){
 //Renderiza a tabela de clientes
 function renderClientes(){
     const vendas = db.exec("SELECT * FROM clientes");
-    const tabela = document.querrySelector("#tabela-clientes tbody");
+    const tabela = document.querySelector("#tabela-clientes tbody");
     tabela.innerHTML = "";
 
     vendas[0]?.values.forEach(venda => {
@@ -131,7 +136,7 @@ function renderClientes(){
             <td>${venda[2]}</td>
             <td>${venda[3]}</td>
         `;
-        table.appendChild(row);
+        tabela.appendChild(row);//erro1
 
     });
 
@@ -200,6 +205,7 @@ function salvarProduto() {
         [nome, marca, modelo, quantidade, valor]
     );
 
+    salvarBanco();
     renderProdutos();
     fecharModal("modal-produto");
     alert("Produto cadastrado com sucesso!");
@@ -218,6 +224,21 @@ function salvarVenda() {
         return;
     }
 
+    //Verifica Cliente
+    const clienteExistente = db.exec(`SELECT * FROM clientes WHERE nome='${cliente}'`)[0];
+    if(!clienteExistente[0]){
+        //Insere o cliente no banco com informações incompletas
+        db.run("INSERT INTO clientes (nome, telefone, email, endereco) VALUES (?, ?, ?, ?)", [
+            cliente, 
+            "", 
+            "", 
+            ""
+        ]);
+        salvarBanco();
+        renderClientes();
+        alert("Cliente cadastrado automaticamente, verifique as informações!");
+    }
+
     // Verifica estoque
     const produto = db.exec(`SELECT * FROM produtos WHERE id=${produtoId}`)[0];
     if (!produto || produto.value[0][3] < quantidade) {
@@ -225,11 +246,13 @@ function salvarVenda() {
         return;
     }
 
+    //Salva a venda
     db.run(
         "INSERT INTO vendas (cliente, produto_id, quantidade, data, valor) VALUES (?, ?, ?, ?, ?)",
         [cliente, produtoId, quantidade, data, valor]
     );
 
+    salvarBanco();
     renderVendas();
     renderProdutos();
     fecharModal("modal-venda");
@@ -253,9 +276,26 @@ function salvarCliente() {
         [nome, telefone, email, endereco]
     );
 
+    salvarBanco();
     renderClientes();
     fecharModal("modal-cliente");
     alert("Cliente cadastrado com sucesso!");
 }
 
-initDatabase();
+function popularClienteseProdutos(){
+    
+    //Lista Clientes
+    const clientes = db.exec("SELECT nome FROM clientes");
+    const clienteSelect = document.getElementById("cliente-venda");
+    clienteSelect.innerHTML = "<option value=''>Selecione um cliente</option>";
+    clientes[0]?.values.forEach(cliente => {
+        const option = document.createElement("option");
+        option.value = cliente[0];
+        option.textContent = cliente[0];
+        clienteSelect.appendChild(option);
+    });
+
+    //Lista Produtos
+}
+
+initDatabase().catch(err => console.error("Erro ao inicializar o banco de dados", err));
