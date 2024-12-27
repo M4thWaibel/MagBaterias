@@ -100,6 +100,10 @@ table th {
     background-color: #f4f4f4;
 }
 
+table tr:hover{
+    background-color: #f1f1f1;
+}
+
 .btn {
     background-color: #3498db;
     color: white;
@@ -111,6 +115,24 @@ table th {
 
 .btn:hover {
     background-color: #2980b9;
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+}
+
+.btn-icon:hover {
+    font-size: 1.1rem;
+    transition: 0.1s;
+    color: #2980b9;
+}
+
+.btn-delete:hover{
+    color: #FF0000;
 }
 
 /* Estilização do Modal */
@@ -133,7 +155,7 @@ table th {
     padding: 20px;
     border-radius: 8px;
     width: 90%;
-    max-width: 400px;
+    max-width: 600px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -218,3 +240,73 @@ table th {
     background: #2980b9;
 }
 
+.mensagem-sucesso{
+    position: flex;
+    top: 20px;
+    right: 20px;
+    background: #2ecc71;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* Relatórios */
+.relatorio-filtros {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#tabela-relatorios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabela-relatorios th, #tabela-relatorios td {
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+}
+
+#tabela-relatorios th {
+    background-color: #f4f4f4;
+}
+
+/* Responsividade */
+
+@media screen and (max-width: 768px) {
+
+    body{
+        font-size: 1.2rem;
+    }
+    
+    table th, table td{
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .modal-content{
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto; /*Permite rolagem no modal*/
+    }
+
+    .btn{
+        font-size: 1rem;
+        padding: 0.4rem 1rem;
+    }
+
+    .sidebar{
+        width: 150px;
+    }
+
+    .sidebar ul li a{
+        font-size: 0.9rem;
+    }
+
+    .content h1{
+        font-size: 1.5rem;
+    }
+    
+}
