@@ -313,14 +313,14 @@ function popularClienteseProdutos() {
     });
 
     // Lista de Produtos
-    const produtos = db.exec(`SELECT id, marca FROM produtos`);
+    const produtos = db.exec(`SELECT id, marca, modelo FROM produtos`);
     const produtoSelect = document.getElementById("produto-venda");
     produtoSelect.innerHTML = "<option value=''>Selecione um produto</option>";
 
     produtos[0]?.values.forEach(produto => {
         const option = document.createElement("option");
         option.value = produto[0];
-        option.textContent = produto[1];
+        option.textContent = produto[1] + " - "+ produto[2];
         produtoSelect.appendChild(option);
     });
 
@@ -501,7 +501,7 @@ function mostarMensagem(mensagem){
     mensagemDiv.textContent = mensagem;
     mensagemDiv.className = "mensagem-sucesso";
     document.body.appendChild(mensagemDiv);
-    setTimeout(() => mensagemDiv.remove(), 300);
+    setTimeout(() => mensagemDiv.remove(), 30);
 }
 
     //Relatórios
