@@ -151,6 +151,14 @@ function renderClientes(){
             <td>${cliente[3]}</td>
             <td>${cliente[4]}</td>
             <td>${cliente[5]}</td>
+            <td>
+                <button class="btn-icon" onClick="editarCliente(${cliente[0]})">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn-icon btn-delete" onClick="deletarCliente(${cliente[0]})">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </td>
         `;
         tabela.appendChild(row);
 
@@ -283,7 +291,7 @@ function salvarCliente() {
     const email = document.getElementById("email-cliente").value;
     const endereco = document.getElementById("endereco-cliente").value;
 
-    if (!nome || !telefone || !endereco) {
+    if (!nome || !telefone) {
         alert("Preencha todos os campos obrigatórios.");
         return;
     }
@@ -389,12 +397,20 @@ function deletarProduto(productId){
         db.run(`DELETE FROM produtos WHERE id=?`, [productId]);
         salvarBanco();
         renderProdutos();
-        alert("Produto deletado com sucesso!");
+    }
+}
+
+function deletarCliente(clienteId){
+    if(confirm("Tem certeza que deseja deletar este cliente?")){
+        db.run(`DELETE FROM clientes WHERE id=?`, [clienteId]);
+        salvarBanco();
+        renderClientes();
     }
 }
 //Editar
 function editarProduto(productId){
     const produto = db.exec(`SELECT * FROM produtos WHERE id=${productId}`)[0];
+
     if(!produto){
         alert("Produto não encontrado");
         return;
@@ -435,7 +451,60 @@ function editarProduto(productId){
         renderProdutos();
         fecharModal("modal-produto");
         alert("Produto atualizado com sucesso!");
+    };
+}
+
+function editarCliente(clienteId){
+    const cliente = db.exec(`SELECT * FROM clientes WHERE id=${clienteId}`)[0];
+
+    console.log("editando cliente");
+    console.log(cliente);
+    console.log(clienteId);
+    
+    if(!cliente){
+        alert("Cliente não encontrado");
+        return;
     }
+
+    console.log(clienteId);
+
+    //Preenche os campos do modal com os dados salvos do cliente
+    document.getElementById("nome-cliente").value = cliente.values[0][1];
+    document.getElementById("cpf-cliente").value = cliente.values[0][2];
+    document.getElementById("telefone-cliente").value = cliente.values[0][3];
+    document.getElementById("email-cliente").value = cliente.values[0][4];
+    document.getElementById("endereco-cliente").value = cliente.values[0][5];
+
+    abrirModal("modal-cliente");
+    console.log(clienteId);
+
+    document.querySelector("#modal-cliente .modal-actions .btn").onclick = function () {
+        const nome = document.getElementById("nome-cliente").value;
+        const cpf = document.getElementById("cpf-cliente").value;
+        const telefone = document.getElementById("telefone-cliente").value;
+        const email = document.getElementById("email-cliente").value;
+        const endereco = document.getElementById("endereco-cliente").value;
+
+        if (!nome || !telefone) {
+            alert("Preencha todos os campos obrigatórios.");
+            return;
+        }
+        console.log(clienteId);
+        db.run(
+            `UPDATE clientes SET nome=?, cpf=?, telefone=?, email=?, endereco=? WHERE id=?`,
+            [nome, cpf, telefone, email, endereco, clienteId]
+        );
+
+        console.log("cliente editado")
+        console.log(cliente);
+        console.log(clienteId);
+
+        salvarBanco();
+        renderClientes();
+        fecharModal("modal-cliente");
+        alert("Cliente atualizado com sucesso!");
+    };
+
 }
 //Limpar Formulário
 function limparFormulario(modalId){
@@ -528,7 +597,7 @@ function atualizarTabelaRelatorios(vendas) {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${venda[1]}</td>
-            <td>${venda[2]}</td>
+            <td>${venda[2]}</td> 
             <td>${venda[3]}</td>
             <td>${venda[4]}</td>
             <td>${venda[5].toFixed(2)}</td>
