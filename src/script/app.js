@@ -426,6 +426,13 @@ function deletarCliente(clienteId){
         renderClientes();
     }
 }
+function deletarVenda(vendaId){
+    if(confirm("Tem certeza que deseja deletar esta venda?")){
+        db.run(`DELETE FROM vendas WHERE id=?`, [vendaId]);
+        salvarBanco();
+        renderVendas();
+    }
+}
 //Editar
 function editarProduto(productId){
     const produto = db.exec(`SELECT * FROM produtos WHERE id=${productId}`)[0];
@@ -688,6 +695,63 @@ function formatarData(dataISO){
     const partesData = dataISO.split("-");
     return `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
 }
+/*
+//Gerar PDF de venda
+function gerarPDFVenda(vendaId) {
+    const { jsPDF } = window.jspdf;
+
+    // Buscar a linha da venda na tabela HTML
+    const linhaVenda = document.querySelector(`#tabela-vendas tbody tr[data-id='${vendaId}']`);
+
+    if (!linhaVenda) {
+        alert("Venda não encontrada na tabela");
+        return;
+    }
+
+    // Extrair as informações da linha da tabela
+    const cliente = linhaVenda.querySelector("td:nth-child(1)").textContent; // Nome do cliente
+    const dataVenda = linhaVenda.querySelector("td:nth-child(2)").textContent; // Data da venda
+    const valorTotal = linhaVenda.querySelector("td:nth-child(5)").textContent.replace('R$ ', '').trim(); // Valor total
+
+    // Criar o PDF
+    const doc = new jsPDF();
+
+    // Definir o título do recibo
+    doc.setFontSize(16);
+    doc.text('RECIBO MAG BATERIAS', 105, 20, null, null, 'center');
+    
+    // Adicionar os dados ao recibo
+    doc.setFontSize(12);
+    doc.text(`CLIENTE: ${cliente}`, 20, 40);
+    doc.text(`DATA DA VENDA: ${dataVenda}`, 20, 50);
+    doc.text(`VALOR TOTAL: R$ ${valorTotal}`, 20, 60);
+
+    // Adicionar a descrição dos produtos da venda
+    doc.text("DESCRIÇÃO", 20, 70);
+
+    // Capturar os produtos da linha da venda (supondo que cada linha tenha os produtos)
+    const produtosVenda = linhaVenda.querySelectorAll(".produtos-venda");
+    let yPosition = 80;
+
+    produtosVenda.forEach(produto => {
+        const descricaoProduto = produto.querySelector(".produto-nome").textContent;
+        const modeloProduto = produto.querySelector(".produto-modelo").textContent;
+        const quantidadeProduto = produto.querySelector(".produto-quantidade").textContent;
+        const valorProduto = produto.querySelector(".produto-valor").textContent;
+
+        doc.text(`${descricaoProduto} - Modelo: ${modeloProduto} - QTD: ${quantidadeProduto} - R$ ${valorProduto}`, 20, yPosition);
+        yPosition += 10;
+    });
+
+    // Informações adicionais
+    doc.text("CNPJ: 45.518.159/0001-30", 20, yPosition);
+    doc.text("TELEFONE: 9 9669-0250 / 9 7403-3610", 20, yPosition + 10);
+    doc.text("ENDEREÇO: Rua: Antônio Magnani,19\nColonial l - Araçoiaba da Serra- SP", 20, yPosition + 20);
+
+    // Salvar o arquivo com o nome "venda_nomeCliente_dataVenda.pdf"
+    const nomeArquivo = `venda_${cliente}_${dataVenda}.pdf`;
+    doc.save(nomeArquivo);
+}*/
 
 
 //Exportar Relatório
