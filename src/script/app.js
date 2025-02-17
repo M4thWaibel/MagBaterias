@@ -291,6 +291,7 @@ function salvarVenda() {
         const produtoInfo = db.exec(`SELECT * FROM produtos WHERE id=${produto.id}`)[0];
         const novoEstoque = produtoInfo.values[0][4] - produto.quantidade;
         db.run(`UPDATE produtos SET quantidade=${novoEstoque} WHERE id=${produto.id}`);
+
     });
 /*
     const vendaId = db.exec("SELECT last_insert_rowid()")[0].values[0][0];
@@ -387,8 +388,14 @@ function adicionarProdutoVenda(){
     }
 
     const produto = db.exec(`SELECT * FROM produtos WHERE id=${produtoId}`)[0];
-    if(!produto || produto.values[0][3] < quantidade){
-        alert("Quantidade em estoque insuficiente.");
+    if(!produto || produto.values.length === 0){
+        alert("produto não encontrado");
+        return;
+    }
+
+    const estoqueDisponivel = produto.values[0][4];
+    if(quantidade > estoqueDisponivel){
+        alert("Quantidade indisponível em estoque");
         return;
     }
 
