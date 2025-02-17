@@ -267,6 +267,7 @@ function salvarVenda() {
     const cliente = document.getElementById("cliente-venda").value;
     const dataVenda = document.getElementById("data-venda").value || new Date().toISOString().slice(0, 10);
     const clienteNovo = document.getElementById("novo-cliente").value;
+    const desconto = parseFloat(document.getElementById("desconto-venda").value) || 0;
 
     if (!cliente && !clienteNovo || produtoSelecionados.length === 0) {
         alert("Preencha todos os campos obrigatórios.");
@@ -282,8 +283,8 @@ function salvarVenda() {
     // Registrar cada produto na venda
     produtoSelecionados.forEach(produto => {
         db.run(
-            "INSERT INTO vendas (cliente, produto_id, quantidade, data, valor) VALUES (?, ?, ?, ?, ?)",
-            [cliente, produto.produto, produto.quantidade, dataVenda, produto.valor]
+            "INSERT INTO vendas (cliente, produto_id, quantidade, data, valor, desconto) VALUES (?, ?, ?, ?, ?, ?)",
+            [cliente, produto.produto, produto.quantidade, dataVenda, produto.valor, desconto]
         );
 
         // Atualizar o estoque
