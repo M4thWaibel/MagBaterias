@@ -57,7 +57,8 @@ async function initDatabase(){
         salvarBanco();
 
     }
-    
+
+    adicionarColunaDesconto();
     renderProdutos();
     renderVendas();
     renderClientes();
@@ -101,9 +102,9 @@ function renderProdutos(){
             <td>${produto[2]}</td>
             <td>${produto[3]}</td>
             <td>${produto[4]}</td>
-            <td>${produto[5].toFixed(2)}</td>
-            <td>${produto[6].toFixed(2)}</td>
-            <td>${produto[7].toFixed(2)}</td>
+            <td>R$ ${produto[5].toFixed(2)}</td>
+            <td>R$ ${produto[6].toFixed(2)}</td>
+            <td>R$ ${produto[7].toFixed(2)}</td>
             <td>
                 <button class="btn-icon" onClick="editarProduto(${produto[0]})">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -130,7 +131,16 @@ function renderVendas(){
             <td>${venda[2]}</td>
             <td>${venda[3]}</td>
             <td>${venda[4]}</td>
-            <td>${venda[5].toFixed(2)}</td>
+            <td>R$ ${venda[5].toFixed(2)}</td>
+            <td>R$ ${venda[6].toFixed(2)}</td>
+            <td>
+                <button class="btn-icon" onClick="editarVenda(${venda[0]})">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn-icon btn-delete" onClick="deletarVenda(${venda[0]})">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </td>
         `;
         tabela.appendChild(row);
 
@@ -261,7 +271,13 @@ function salvarVenda() {
     if (!cliente && !clienteNovo || produtoSelecionados.length === 0) {
         alert("Preencha todos os campos obrigatórios.");
         return;
-    }
+    };
+
+    if(!cliente){
+        
+        cliente = clienteNovo;
+
+    };
 
     // Registrar cada produto na venda
     produtoSelecionados.forEach(produto => {
@@ -275,6 +291,9 @@ function salvarVenda() {
         const novoEstoque = produtoInfo.values[0][4] - produto.quantidade;
         db.run(`UPDATE produtos SET quantidade=${novoEstoque} WHERE id=${produto.id}`);
     });
+
+    const vendaId = db.exec("SELECT last_insert_rowid()")[0].values[0][0];
+    gerarPDFVenda(vendaId);
 
     salvarBanco();
     renderVendas();
@@ -506,6 +525,48 @@ function editarCliente(clienteId){
     };
 
 }
+
+function editarVenda(vendaId) {
+    const venda = db.exec(`SELECT * FROM vendas WHERE id=${vendaId}`)[0];
+
+    if (!venda) {
+        alert("Venda não encontrada");
+        return;
+    }
+
+    // Preenche os campos do novo modal com as informações editáveis
+    document.getElementById("cliente-editar").value = venda.values[0][1]; // Cliente
+    document.getElementById("data-editar").value = venda.values[0][4]; // Data
+    document.getElementById("valor-editar").value = venda.values[0][5].toFixed(2); // Valor total
+    document.getElementById("desconto-editar").value = venda.values[0][6] ? venda.values[0][6].toFixed(2) : ''; // Desconto
+
+    abrirModal("modal-editar-venda");
+
+    // Substitui a função de salvar para a função de editar
+    document.querySelector("#modal-editar-venda .modal-actions .btn").onclick = function() {
+        const cliente = document.getElementById("cliente-editar").value;
+        const dataVenda = document.getElementById("data-editar").value || new Date().toISOString().slice(0, 10);
+        const valorTotal = parseFloat(document.getElementById("valor-editar").value);
+        const desconto = parseFloat(document.getElementById("desconto-editar").value) || 0;
+
+        if (!cliente || isNaN(valorTotal)) {
+            alert("Preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        db.run(
+            "UPDATE vendas SET cliente=?, data=?, valor=?, desconto=? WHERE id=?",
+            [cliente, dataVenda, valorTotal, desconto, vendaId]
+        );
+
+        salvarBanco();
+        renderVendas();
+        fecharModal("modal-editar-venda");
+        alert("Venda editada com sucesso!");
+    };
+}
+
+
 //Limpar Formulário
 function limparFormulario(modalId){
     const modal = document.getElementById(modalId);
@@ -564,7 +625,7 @@ function atualizarValorTotal() {
 }
 
 
-    //Mensagens
+//Mensagens
 function mostarMensagem(mensagem){
     const mensagemDiv = document.createElement("div");
     mensagemDiv.textContent = mensagem;
@@ -572,6 +633,22 @@ function mostarMensagem(mensagem){
     document.body.appendChild(mensagemDiv);
     setTimeout(() => mensagemDiv.remove(), 30);
 }
+//Correção de dt
+function adicionarColunaDesconto() {
+    // Verifica se a coluna 'desconto' já existe na tabela de vendas
+    const resultado = db.exec(`PRAGMA table_info(vendas)`);
+    const colunaDescontoExiste = resultado[0].values.some(coluna => coluna[1] === 'desconto');
+
+    if (!colunaDescontoExiste) {
+        // Se a coluna 'desconto' não existir, a adiciona
+        db.run("ALTER TABLE vendas ADD COLUMN desconto REAL DEFAULT 0");
+        salvarBanco(); // Salvar alterações no banco
+        console.log("Coluna 'desconto' adicionada com sucesso!");
+    } else {
+        console.log("A coluna 'desconto' já existe.");
+    }
+}
+
 
     //Relatórios
 function gerarRelatorioPorData() {
@@ -605,6 +682,13 @@ function atualizarTabelaRelatorios(vendas) {
         tabela.appendChild(row);
     });
 }
+
+//Formatar data
+function formatarData(dataISO){
+    const partesData = dataISO.split("-");
+    return `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
+}
+
 
 //Exportar Relatório
 function exportarTabela(){
