@@ -282,21 +282,26 @@ function salvarVenda() {
 
     // Registrar cada produto na venda
     produtoSelecionados.forEach(produto => {
+        // Verificar se o estoque é suficiente
+        const produtoInfo = db.exec(`SELECT quantidade FROM produtos WHERE id=${produto.id}`)[0];
+        const estoqueDisponivel = produtoInfo.values[0][0];
+    
+        if (estoqueDisponivel < produto.quantidade) {
+            alert("Quantidade em estoque insuficiente para " + produto.produto);
+            return;
+        }
+    
+        // Registrar a venda
         db.run(
             "INSERT INTO vendas (cliente, produto_id, quantidade, data, valor, desconto) VALUES (?, ?, ?, ?, ?, ?)",
             [cliente, produto.produto, produto.quantidade, dataVenda, produto.valor, desconto]
         );
-
+    
         // Atualizar o estoque
-        const produtoInfo = db.exec(`SELECT * FROM produtos WHERE id=${produto.id}`)[0];
-        const novoEstoque = produtoInfo.values[0][4] - produto.quantidade;
+        const novoEstoque = estoqueDisponivel - produto.quantidade;
         db.run(`UPDATE produtos SET quantidade=${novoEstoque} WHERE id=${produto.id}`);
-
     });
-/*
-    const vendaId = db.exec("SELECT last_insert_rowid()")[0].values[0][0];
-    gerarPDFVenda(vendaId);
-*/
+
     salvarBanco();
     renderVendas();
     renderProdutos();
@@ -361,7 +366,9 @@ function popularClienteseProdutos() {
 
         if (produtoId) {
             const produto = db.exec(`SELECT quantidade FROM produtos WHERE id=${produtoId}`)[0];
+            console.log("Produto encontrado:", produto);
             const quantidadeDisponivel = produto.values[0][0];
+            console.log("Quantidade disponível:", quantidadeDisponivel);
 
             for (let i = 1; i <= quantidadeDisponivel; i++) {
                 const option = document.createElement("option");
