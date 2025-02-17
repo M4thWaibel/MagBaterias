@@ -291,10 +291,10 @@ function salvarVenda() {
         const novoEstoque = produtoInfo.values[0][4] - produto.quantidade;
         db.run(`UPDATE produtos SET quantidade=${novoEstoque} WHERE id=${produto.id}`);
     });
-
+/*
     const vendaId = db.exec("SELECT last_insert_rowid()")[0].values[0][0];
     gerarPDFVenda(vendaId);
-
+*/
     salvarBanco();
     renderVendas();
     renderProdutos();
