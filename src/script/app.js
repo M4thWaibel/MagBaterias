@@ -187,6 +187,12 @@ function mostrarSecao(secaoId) {
         secao.style.display = "none"; // Oculta usando display: none
     });
 
+    // Esconde os dropdowns de busca se estiverem abertos
+    const dropdownCliente = document.getElementById('dropdown-cliente');
+    const dropdownProduto = document.getElementById('dropdown-produto');
+    if (dropdownCliente) dropdownCliente.style.display = 'none';
+    if (dropdownProduto) dropdownProduto.style.display = 'none';
+
     // Mostra a seção selecionada
     const secaoAtiva = document.getElementById(secaoId);
     if (secaoAtiva) {
@@ -333,43 +339,127 @@ function salvarCliente() {
     alert("Cliente cadastrado com sucesso!");
     limparFormulario("modal-cliente");
 }
+// Armazenar listas completas para busca
+let listaCompletaClientes = [];
+let listaCompletaProdutos = [];
+
 function popularClienteseProdutos() {
     // Lista de Clientes
     const clientes = db.exec(`SELECT nome FROM clientes`);
     const clienteSelect = document.getElementById("cliente-venda");
     clienteSelect.innerHTML = "<option value=''>Selecione um cliente</option>";
 
-    clientes[0]?.values.forEach(cliente => {
-        const option = document.createElement("option");
-        option.value = cliente[0];
-        option.textContent = cliente[0];
-        clienteSelect.appendChild(option);
-    });
+    if (clientes[0]?.values) {
+        listaCompletaClientes = clientes[0].values.map(cliente => ({
+            value: cliente[0],
+            text: cliente[0]
+        }));
+        
+        listaCompletaClientes.forEach(cliente => {
+            const option = document.createElement("option");
+            option.value = cliente.value;
+            option.textContent = cliente.text;
+            clienteSelect.appendChild(option);
+        });
+    }
 
     // Lista de Produtos
     const produtos = db.exec(`SELECT id, marca, modelo FROM produtos`);
     const produtoSelect = document.getElementById("produto-venda");
     produtoSelect.innerHTML = "<option value=''>Selecione um produto</option>";
 
-    produtos[0]?.values.forEach(produto => {
-        const option = document.createElement("option");
-        option.value = produto[0];
-        option.textContent = produto[1] + " - "+ produto[2];
-        produtoSelect.appendChild(option);
+    if (produtos[0]?.values) {
+        listaCompletaProdutos = produtos[0].values.map(produto => ({
+            value: produto[0],
+            text: `${produto[1]} - ${produto[2]}`
+        }));
+        
+        listaCompletaProdutos.forEach(produto => {
+            const option = document.createElement("option");
+            option.value = produto.value;
+            option.textContent = produto.text;
+            produtoSelect.appendChild(option);
+        });
+    }
+
+    // Adicionar event listeners para busca
+    document.getElementById("busca-cliente").addEventListener("input", (e) => {
+        filtrarOpcoes(e.target.value, "cliente-venda", listaCompletaClientes);
     });
 
-    //Lista de Quantidades
-    produtoSelect.addEventListener("change", () => {
-        const produtoId = produtoSelect.value;
-        const quantidadeSelect = document.getElementById("quantidade-venda");
-        quantidadeSelect.innerHTML = "<option value=''>Selecione a quantidade</option>";
+    document.getElementById("busca-produto").addEventListener("input", (e) => {
+        filtrarOpcoes(e.target.value, "produto-venda", listaCompletaProdutos);
+    });
 
-        if (produtoId) {
-            const produto = db.exec(`SELECT quantidade FROM produtos WHERE id=${produtoId}`)[0];
-            console.log("Produto encontrado:", produto);
+    // Lista de Quantidades
+    produtoSelect.addEventListener("change", atualizarQuantidades);
+    document.getElementById("quantidade-venda").innerHTML = "";
+}
+
+// Função para filtrar opções baseado na busca
+function filtrarOpcoes(termoBusca, selectId, listaCompleta) {
+    const dropdown = document.getElementById(selectId === 'cliente-venda' ? 'dropdown-cliente' : 'dropdown-produto');
+    const select = document.getElementById(selectId);
+    const searchInput = document.getElementById(selectId === 'cliente-venda' ? 'busca-cliente' : 'busca-produto');
+    dropdown.innerHTML = '';
+    
+    const termo = termoBusca.toLowerCase();
+    
+    if (termo === '') {
+        dropdown.style.display = 'none';
+        return;
+    }
+    
+    const opcoesFiltradas = listaCompleta.filter(item => 
+        item.text.toLowerCase().includes(termo)
+    );
+
+    if (opcoesFiltradas.length > 0) {
+        opcoesFiltradas.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'search-dropdown-item';
+            div.textContent = item.text;
+            div.onclick = () => {
+                select.value = item.value;
+                searchInput.value = ''; // Clear the search field
+                dropdown.style.display = 'none';
+                if (selectId === 'produto-venda') {
+                    atualizarQuantidades();
+                }
+            };
+            dropdown.appendChild(div);
+        });
+        dropdown.style.display = 'block';
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+// Adicionar event listeners para fechar dropdowns ao clicar fora
+document.addEventListener('click', (e) => {
+    const dropdownCliente = document.getElementById('dropdown-cliente');
+    const dropdownProduto = document.getElementById('dropdown-produto');
+    const buscaCliente = document.getElementById('busca-cliente');
+    const buscaProduto = document.getElementById('busca-produto');
+
+    if (!buscaCliente.contains(e.target) && !dropdownCliente.contains(e.target)) {
+        dropdownCliente.style.display = 'none';
+    }
+    if (!buscaProduto.contains(e.target) && !dropdownProduto.contains(e.target)) {
+        dropdownProduto.style.display = 'none';
+    }
+});
+
+// Função separada para atualizar quantidades
+function atualizarQuantidades() {
+    const produtoId = document.getElementById("produto-venda").value;
+    const quantidadeSelect = document.getElementById("quantidade-venda");
+    quantidadeSelect.innerHTML = "<option value=''>Selecione a quantidade</option>";
+
+    if (produtoId) {
+        const produto = db.exec(`SELECT quantidade FROM produtos WHERE id=${produtoId}`)[0];
+        if (produto) {
             const quantidadeDisponivel = produto.values[0][0];
-            console.log("Quantidade disponível:", quantidadeDisponivel);
-
             for (let i = 1; i <= quantidadeDisponivel; i++) {
                 const option = document.createElement("option");
                 option.value = i;
@@ -377,10 +467,7 @@ function popularClienteseProdutos() {
                 quantidadeSelect.appendChild(option);
             }
         }
-    });
-
-    // Limpar a lista de quantidades sempre que os produtos forem atualizados
-    document.getElementById("quantidade-venda").innerHTML = "";
+    }
 }
 //Adicionar produtos a tabela de venda
 const produtoSelecionados=[];
@@ -596,6 +683,19 @@ function limparFormulario(modalId){
         const form = modal.querySelector("form");
         if(form){
             form.reset();
+        }
+        
+        // Limpar campos de busca específicos do modal de venda
+        if(modalId === "modal-venda"){
+            const buscaCliente = document.getElementById("busca-cliente");
+            const buscaProduto = document.getElementById("busca-produto");
+            const dropdownCliente = document.getElementById("dropdown-cliente");
+            const dropdownProduto = document.getElementById("dropdown-produto");
+            
+            if(buscaCliente) buscaCliente.value = "";
+            if(buscaProduto) buscaProduto.value = "";
+            if(dropdownCliente) dropdownCliente.style.display = "none";
+            if(dropdownProduto) dropdownProduto.style.display = "none";
         }
     }
 }

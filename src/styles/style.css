@@ -156,6 +156,8 @@ table tr:hover{
     border-radius: 8px;
     width: 90%;
     max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -271,6 +273,64 @@ table tr:hover{
 
 #tabela-relatorios th {
     background-color: #f4f4f4;
+}
+
+/* Search Container Styles */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.search-input {
+    padding: 8px;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Search Dropdown Styles */
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #bebebe;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.search-dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.search-dropdown-item.selected {
+    background-color: #3498db;
+    color: white;
 }
 
 /* Responsividade */

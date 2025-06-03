@@ -113,18 +113,26 @@
                             <h2>Registro de Venda</h2>
                             <form id="form-venda">
                                 <label for="cliente">Cliente</label>
-                                <select id="cliente-venda">
-                                    <!-- Opção para clientes cadastrados -->
-                                </select>
+                                <div class="search-container">
+                                    <input type="text" id="busca-cliente" placeholder="Buscar cliente..." class="search-input">
+                                    <div id="dropdown-cliente" class="search-dropdown"></div>
+                                    <select id="cliente-venda">
+                                        <!-- Opção para clientes cadastrados -->
+                                    </select>
+                                </div>
                                 <input type="text" id="novo-cliente" placeholder="Nome do cliente (se novo)">
                                 
                                 <label for="data">Data</label>
                                 <input type="date" id="data-venda" value="">
 
                                 <label for="produto">Produto</label>
-                                <select id="produto-venda">
-                                    <!-- Opção para produtos em estoque -->
-                                </select>
+                                <div class="search-container">
+                                    <input type="text" id="busca-produto" placeholder="Buscar produto..." class="search-input">
+                                    <div id="dropdown-produto" class="search-dropdown"></div>
+                                    <select id="produto-venda">
+                                        <!-- Opção para produtos em estoque -->
+                                    </select>
+                                </div>
 
                                 <label for="quantidade">Quantidade</span></label>
                                 <select id="quantidade-venda">
